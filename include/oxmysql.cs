@@ -154,7 +154,7 @@ namespace Resource.Server
         /// <param name="query">mysql query string</param>
         /// <param name="arguments">? = arg[i]</param>
         /// <returns>The return value is a boolean, which is the result of the transaction.</returns>
-        public static async Task<bool> Transaction(object queries)
+        public static async Task<bool> Transaction(object[] queries)
         {
             try
             {
@@ -213,51 +213,5 @@ namespace Resource.Server
                 { throw new TimeoutException("The operation has timed out."); }
             }
         }
-    }
-    public struct Blob
-    {
-        private readonly string value;
-        private Blob(string value)
-        { this.value = value; }
-        public static Blob Convert(object value)
-        {
-            try
-            {
-                if (!(value is List<object> _list)) { throw new InvalidCastException($"Blob: {value.GetType().Name} !is List<object>"); }
-                if (_list.Count == 0) { throw new InvalidCastException("Blob: List<object>.Count == 0"); }
-                if (!(_list[0] is int)) { throw new InvalidCastException($"Blob: {_list[0].GetType().Name} ! is List<int>"); }
-                byte[] blob = _list.Select(x => (byte)(int)x).ToArray();
-                return new Blob(Encoding.UTF8.GetString(blob));
-            }
-            catch (Exception ex) { Print.Error(ex.Message); }
-            return new Blob("");
-        }
-        public static implicit operator string(Blob blob)
-        { return blob.value; }
-        public override string ToString()
-        { return value; }
-    }
-    public struct TimeStamp
-    {
-        private readonly double value;
-        private TimeStamp(double value)
-        { this.value = value; }
-        public static TimeStamp Convert(object value)
-        {
-            try
-            {
-                if (!(value is double timestamp)) { throw new InvalidCastException($"TimeStamp: {value.GetType().Name} !is double"); }
-                return new TimeStamp(timestamp);
-            }
-            catch (Exception ex) { Print.Error(ex.Message); }
-            return new TimeStamp(0);
-        }
-        public static implicit operator double(TimeStamp timestamp)
-        { return timestamp.value; }
-        public static implicit operator string(TimeStamp timestamp)
-        { return timestamp.value.ToString(); }
-        public override string ToString()
-        { return value.ToString(); }
-
     }
 }
