@@ -1,11 +1,10 @@
 # oxmysql_csharp
-* c# compatability for oxmysql
+* c# compatability for [oxmysql](https://overextended.github.io/docs/category/oxmysql)
 * awaoids [#thread-affinity](https://docs.fivem.net/docs/scripting-manual/runtimes/javascript/#thread-affinity)
 
 # oxsql
 * include/oxmysql.cs is a class you can include to your project for easy use
----
-* examples 
+* example code can be found below for each
 ---
 ```cs
 // example insert
