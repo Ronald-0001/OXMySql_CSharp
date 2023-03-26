@@ -4,8 +4,8 @@
 
 # oxsql
 * include/oxmysql.cs is a class you can include to your project for easy use
-
-# examples
+---
+* examples 
 ---
 ```cs
 // example insert
