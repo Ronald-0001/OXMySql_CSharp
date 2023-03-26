@@ -79,4 +79,8 @@ Print.Success(success.ToString());
 // example update
 int changedRows = await Oxsql.Update("UPDATE characters SET cts = CURRENT_TIMESTAMP() WHERE cid = :user ", new { id = 10000, user = "discord:test_1" });
 Print.Success(changedRows.ToString());
+<<<<<<< HEAD
 ```
+=======
+```
+>>>>>>> de4bd2acb02087c55c546a2db2da164830a35736
