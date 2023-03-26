@@ -1,7 +1,11 @@
+debug = false;
+
 exports('insert', (query, args) => {
+  if (debug) { console.log(query, args); }
   return new Promise(async (resolve) => {
     try {
-      const id = await exports.oxmysql.insert_async(query, args)
+      const id = await exports.oxmysql.insert_async(query, args);
+      if (debug) { console.log(id); }
       resolve({result: id, error: false, msg: ""});
     } catch (error) {
       console.log(error);
@@ -11,9 +15,11 @@ exports('insert', (query, args) => {
 });
 
 exports('prepare', (query, args) => {
+  if (debug) { console.log(query, args); }
   return new Promise(async (resolve) => {
     try {
-      const result = await exports.oxmysql.prepare_async(query, args)
+      const result = await exports.oxmysql.prepare_async(query, args);
+      if (debug) { console.log(result); }
       resolve({result: result, error: false, msg: ""});
     } catch (error) {
       console.log(error);
@@ -23,9 +29,11 @@ exports('prepare', (query, args) => {
 });
 
 exports('query', (query, args) => {
+  if (debug) { console.log(query, args); }
   return new Promise(async (resolve) => {
     try {
-      const result = await exports.oxmysql.query_async(query, args)
+      const result = await exports.oxmysql.query_async(query, args);
+      if (debug) { console.log(result); }
       resolve({result: result, error: false, msg: ""});
     } catch (error) {
       console.log(error);
@@ -35,9 +43,11 @@ exports('query', (query, args) => {
 });
 
 exports('scalar', (query, args) => {
+  if (debug) { console.log(query, args); }
   return new Promise(async (resolve) => {
     try {
-      const result = await exports.oxmysql.scalar_async(query, args)
+      const result = await exports.oxmysql.scalar_async(query, args);
+      if (debug) { console.log(result); }
       resolve({result: result, error: false, msg: ""});
     } catch (error) {
       console.log(error);
@@ -47,9 +57,11 @@ exports('scalar', (query, args) => {
 });
 
 exports('single', (query, args) => {
+  if (debug) { console.log(query, args); }
   return new Promise(async (resolve) => {
     try {
-      const row = await exports.oxmysql.single_async(query, args)
+      const row = await exports.oxmysql.single_async(query, args);
+      if (debug) { console.log(row); }
       resolve({result: row, error: false, msg: ""});
     } catch (error) {
       console.log(error);
@@ -59,9 +71,11 @@ exports('single', (query, args) => {
 });
 
 exports('transaction', (queries) => {
+  if (debug) { console.log(queries); }
   return new Promise(async (resolve) => {
     try {
-      const success = await exports.oxmysql.transaction_async(queries)
+      const success = await exports.oxmysql.transaction_async(queries);
+      if (debug) { console.log(success); }
       resolve({result: success, error: false, msg: ""});
     } catch (error) {
       console.log(error);
@@ -71,9 +85,11 @@ exports('transaction', (queries) => {
 });
 
 exports('update', (query, args) => {
+  if (debug) { console.log(query, args); }
   return new Promise(async (resolve) => {
     try {
-      const affectedRows = await exports.oxmysql.update_async(query, args)
+      const affectedRows = await exports.oxmysql.update_async(query, args);
+      if (debug) { console.log(affectedRows); }
       resolve({result: affectedRows, error: false, msg: ""});
     } catch (error) {
       console.log(error);
