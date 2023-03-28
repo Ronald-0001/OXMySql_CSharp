@@ -55,7 +55,7 @@ namespace Resource.Server
                 // handel result
                 return (int)result.result;
             }
-            catch (Exception ex) { Print.Error(ex.Message); }
+            catch (Exception ex) { Print.Error($"Insert Error: {ex}"); }
             // fallback result
             return -1;
         }
@@ -77,7 +77,7 @@ namespace Resource.Server
                 // handel result
                 return (object)result.result;
             }
-            catch (Exception ex) { Print.Error(ex.Message); }
+            catch (Exception ex) { Print.Error($"Prepare Error: {ex}"); }
             // fallback result
             return false;
         }
@@ -92,14 +92,15 @@ namespace Resource.Server
             try
             {
                 // handel request
-                Task<object> task = Export.prepare(query, arguments);
+                Task<object> task = Export.query(query, arguments);
+                Print.Log(task.ToString());
                 dynamic result = await task.TimeoutAfter(Timeout);
                 // handel errors
                 if ((bool)result.error) { throw new Exception((string)result.msg); }
                 // handel result
                 return (object)result.result;
             }
-            catch (Exception ex) { Print.Error(ex.Message); }
+            catch (Exception ex) { Print.Error($"Query Error: {ex}"); }
             // fallback result
             return false;
         }
@@ -121,7 +122,7 @@ namespace Resource.Server
                 // handel result
                 return result.result;
             }
-            catch (Exception ex) { Print.Error(ex.Message); }
+            catch (Exception ex) { Print.Error($"Scalar Error: {ex}"); }
             // fallback result
             return false;
         }
@@ -143,7 +144,7 @@ namespace Resource.Server
                 // handel result
                 return (IDictionary<string, object>)result.result;
             }
-            catch (Exception ex) { Print.Error(ex.Message); }
+            catch (Exception ex) { Print.Error($"Single Error: {ex}"); }
             // fallback result
             return new Dictionary<string, object>();
         }
@@ -166,7 +167,7 @@ namespace Resource.Server
                 // handel result
                 return (bool)result.result;
             }
-            catch (Exception ex) { Print.Error(ex.Message); }
+            catch (Exception ex) { Print.Error($"Transaction Error: {ex}"); }
             // fallback result
             return false;
         }
@@ -188,7 +189,7 @@ namespace Resource.Server
                 // handel result
                 return (int)result.result;
             }
-            catch (Exception ex) { Print.Error(ex.Message); }
+            catch (Exception ex) { Print.Error($"Update Error: {ex}"); }
             // fallback result
             return -1;
         }
@@ -213,5 +214,51 @@ namespace Resource.Server
                 { throw new TimeoutException("The operation has timed out."); }
             }
         }
+    }
+    public struct Blob
+    {
+        private readonly string value;
+        private Blob(string value)
+        { this.value = value; }
+        public static Blob Convert(object value)
+        {
+            try
+            {
+                if (!(value is List<object> _list)) { throw new InvalidCastException($"Blob: {value.GetType().Name} !is List<object>"); }
+                if (_list.Count == 0) { throw new InvalidCastException("Blob: List<object>.Count == 0"); }
+                if (!(_list[0] is int)) { throw new InvalidCastException($"Blob: {_list[0].GetType().Name} ! is List<int>"); }
+                byte[] blob = _list.Select(x => (byte)(int)x).ToArray();
+                return new Blob(Encoding.UTF8.GetString(blob));
+            }
+            catch (Exception ex) { Print.Error($"Blob Error: {ex}"); }
+            return new Blob("");
+        }
+        public static implicit operator string(Blob blob)
+        { return blob.value; }
+        public override string ToString()
+        { return value; }
+    }
+    public struct TimeStamp
+    {
+        private readonly double value;
+        private TimeStamp(double value)
+        { this.value = value; }
+        public static TimeStamp Convert(object value)
+        {
+            try
+            {
+                if (!(value is double timestamp)) { throw new InvalidCastException($"TimeStamp: {value.GetType().Name} !is double"); }
+                return new TimeStamp(timestamp);
+            }
+            catch (Exception ex) { Print.Error($"TimeStamp Error: {ex}"); }
+            return new TimeStamp(0);
+        }
+        public static implicit operator double(TimeStamp timestamp)
+        { return timestamp.value; }
+        public static implicit operator string(TimeStamp timestamp)
+        { return timestamp.value.ToString(); }
+        public override string ToString()
+        { return value.ToString(); }
+
     }
 }
